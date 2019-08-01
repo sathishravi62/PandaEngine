@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "graphicTutorial", "graphicTutorial\graphicTutorial.vcxproj", "{BEEA66B2-851D-4FE3-B122-C7B5B63460D2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FCA2ED2B-84E1-465A-9D7D-5AAE8FA5D92F} = {FCA2ED2B-84E1-465A-9D7D-5AAE8FA5D92F}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PandaEngine", "PandaEngine\PandaEngine.vcxproj", "{FCA2ED2B-84E1-465A-9D7D-5AAE8FA5D92F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BEEA66B2-851D-4FE3-B122-C7B5B63460D2}.Debug|x64.ActiveCfg = Debug|x64
+		{BEEA66B2-851D-4FE3-B122-C7B5B63460D2}.Debug|x64.Build.0 = Debug|x64
+		{BEEA66B2-851D-4FE3-B122-C7B5B63460D2}.Debug|x86.ActiveCfg = Debug|Win32
+		{BEEA66B2-851D-4FE3-B122-C7B5B63460D2}.Debug|x86.Build.0 = Debug|Win32
+		{BEEA66B2-851D-4FE3-B122-C7B5B63460D2}.Release|x64.ActiveCfg = Release|x64
+		{BEEA66B2-851D-4FE3-B122-C7B5B63460D2}.Release|x64.Build.0 = Release|x64
+		{BEEA66B2-851D-4FE3-B122-C7B5B63460D2}.Release|x86.ActiveCfg = Release|Win32
+		{BEEA66B2-851D-4FE3-B122-C7B5B63460D2}.Release|x86.Build.0 = Release|Win32
+		{FCA2ED2B-84E1-465A-9D7D-5AAE8FA5D92F}.Debug|x64.ActiveCfg = Debug|x64
+		{FCA2ED2B-84E1-465A-9D7D-5AAE8FA5D92F}.Debug|x64.Build.0 = Debug|x64
+		{FCA2ED2B-84E1-465A-9D7D-5AAE8FA5D92F}.Debug|x86.ActiveCfg = Debug|Win32
+		{FCA2ED2B-84E1-465A-9D7D-5AAE8FA5D92F}.Debug|x86.Build.0 = Debug|Win32
+		{FCA2ED2B-84E1-465A-9D7D-5AAE8FA5D92F}.Release|x64.ActiveCfg = Release|x64
+		{FCA2ED2B-84E1-465A-9D7D-5AAE8FA5D92F}.Release|x64.Build.0 = Release|x64
+		{FCA2ED2B-84E1-465A-9D7D-5AAE8FA5D92F}.Release|x86.ActiveCfg = Release|Win32
+		{FCA2ED2B-84E1-465A-9D7D-5AAE8FA5D92F}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AC898CC6-3F8C-4189-8D61-F626DB72C75A}
+	EndGlobalSection
+EndGlobal
