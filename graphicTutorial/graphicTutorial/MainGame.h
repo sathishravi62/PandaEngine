@@ -17,6 +17,7 @@
 
 #include <vector>
 
+#include "Bullet.h"
 enum  GameState 
 {
 	PLAY, EXIT
@@ -49,7 +50,8 @@ private:
 	PandaEngine::InputManager _inputManager;
 	PandaEngine::FpsLimiter _fpsLimiter;
 
-	
+	std::vector<Bullet> _bullets;
+
 	float _fps, _maxFps;
 };
 

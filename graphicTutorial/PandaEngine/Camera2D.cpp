@@ -41,6 +41,10 @@ namespace PandaEngine {
 	}
 	glm::vec2 Camera2D::convertScreenToWorld(glm::vec2 screenCords)
 	{
+		// Invert Y-Direction 
+
+		screenCords.y = _screenHeight - screenCords.y;
+
 		// make it so that 0 is center
 		screenCords -= glm::vec2(_screenWidth / 2, _screenHeight / 2);
 		// Scale the coordinates
