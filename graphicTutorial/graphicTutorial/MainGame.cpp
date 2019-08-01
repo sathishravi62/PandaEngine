@@ -68,14 +68,15 @@ void MainGame::gameLoop()
 		_fps = _fpsLimiter.end();
 
 		// print only once every 10 frames
-		static int frameCounter = 0;
+
+		/*static int frameCounter = 0;
 
 		frameCounter++;
 		if (frameCounter == 10)
 		{
 			std::cout << _fps << std::endl;
 			frameCounter = 0;
-		}
+		}*/
 
 		
 	}
@@ -100,7 +101,7 @@ void MainGame::processInput()
 			break;
 
 		case SDL_MOUSEMOTION:
-			//std::cout << evnt.motion.x << " " << evnt.motion.y << std::endl;
+			_inputManager.setMouseCoord(evnt.motion.x, evnt.motion.y);
 			break;
 
 		case SDL_KEYDOWN:
@@ -110,8 +111,16 @@ void MainGame::processInput()
 		case SDL_KEYUP:
 			_inputManager.releaseKey(evnt.key.keysym.sym);
 			break;
-		}
 
+		case SDL_MOUSEBUTTONDOWN:
+			_inputManager.pressKey(evnt.button.button);
+			break;
+
+		case SDL_MOUSEBUTTONUP:
+			_inputManager.releaseKey(evnt.button.button);
+			break;
+		}
+		
 	}
 
 	
@@ -144,6 +153,12 @@ void MainGame::processInput()
 		_camera.setScale(_camera.getScale() - SCALE);
 	}
 
+	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT))
+	{
+		glm::vec2 mouseCoords = _inputManager.getMouseCoord();
+		mouseCoords = _camera.convertScreenToWorld(mouseCoords);
+		std::cout << mouseCoords.x << " , " << mouseCoords.y << std::endl;
+	}
 
 }
 
@@ -165,7 +180,7 @@ void MainGame::drawGame()
 
 	glm::vec4 pos(0.0f, 0.0f, 50.0f, 50.0f);
 	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
-	static PandaEngine::Texture texture = PandaEngine::ResourceManager::getTexture("texture/block.png", GL_FALSE);
+	static PandaEngine::Texture texture = PandaEngine::ResourceManager::getTexture("texture/boy.png", GL_TRUE);
 	PandaEngine::Color color;
 	color.r = 255;
 	color.g = 255;
@@ -173,7 +188,6 @@ void MainGame::drawGame()
 	color.a = 255;
 	
 	_spriteBatch.draw(pos, uv, texture.ID, 0.0f, color);
-	_spriteBatch.draw(pos + glm::vec4(50,0,0,0), uv, texture.ID, 0.0f, color);
 
 	_spriteBatch.end();
 

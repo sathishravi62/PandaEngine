@@ -12,8 +12,14 @@ namespace PandaEngine {
 		Camera2D();
 		~Camera2D();
 
+		// setting up the orthographic matrix and screen dimension
 		void init(int screenWidth, int screenHeight);
+
+		//	update the camera matrix if needed
 		void Update();
+
+
+		glm::vec2 convertScreenToWorld(glm::vec2 screenCords);
 
 		// settes
 		void setPosition(const glm::vec2& newPosition) { _position = newPosition; _needsMatrixUpdate = true; }

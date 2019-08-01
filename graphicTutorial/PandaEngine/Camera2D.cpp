@@ -39,4 +39,16 @@ namespace PandaEngine {
 			_needsMatrixUpdate = false;
 		}
 	}
+	glm::vec2 Camera2D::convertScreenToWorld(glm::vec2 screenCords)
+	{
+		// make it so that 0 is center
+		screenCords -= glm::vec2(_screenWidth / 2, _screenHeight / 2);
+		// Scale the coordinates
+		screenCords /= _scale;
+
+		// Translate with the camera position;
+		screenCords += _position;
+
+		return screenCords;
+	}
 }
