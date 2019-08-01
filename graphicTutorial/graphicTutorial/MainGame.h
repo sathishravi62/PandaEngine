@@ -12,6 +12,8 @@
 #include <PandaEngine/SpriteBatch.h>
 #include <PandaEngine/ResourceManager.h>
 #include <PandaEngine/Vertex.h>
+#include <PandaEngine/InputManager.h>
+#include <PandaEngine/Timing.h>
 
 #include <vector>
 
@@ -35,7 +37,6 @@ private:
 	void gameLoop();
 	void processInput();
 	void drawGame();
-	void fpsCalculate();
 
 	PandaEngine::Window _window;
 	int _screenWidth,_screenHeight;
@@ -45,10 +46,11 @@ private:
 	PandaEngine::Shader _colorShader;
 	PandaEngine::Camera2D _camera;
 	PandaEngine::SpriteBatch _spriteBatch;
+	PandaEngine::InputManager _inputManager;
+	PandaEngine::FpsLimiter _fpsLimiter;
 
-	float _fps, _frameTime,_maxFps;
-
-	float _time;
+	
+	float _fps, _maxFps;
 };
 
 #endif // !MAINGAME_H

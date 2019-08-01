@@ -158,6 +158,7 @@
   <ItemGroup>
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="Error.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="PandaEngine.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -165,11 +166,13 @@
     <ClCompile Include="SpriteBatch.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureCache.cpp" />
+    <ClCompile Include="Timing.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="Error.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="PandaEngine.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="Shader.h" />
@@ -177,6 +180,7 @@
     <ClInclude Include="SpriteBatch.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureCache.h" />
+    <ClInclude Include="Timing.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
