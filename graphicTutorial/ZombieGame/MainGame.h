@@ -15,6 +15,8 @@
 #include "Level.h"
 #include <vector>
 
+class Zombie;
+
 enum class GameState
 {
 	PLAY,
@@ -66,11 +68,17 @@ private:
 	std::vector<Level*> _levels; // vector of all levels
 
 	Player* _player;
+
 	std::vector<Human*> _humans; // vector of all human
 
+	std::vector<Zombie*> _zombies; // vector of all zombies
+
 	int _screenWidth, _screenHeight,_currentLevel;
-	float _fps;
+
+	float _fps;	
+
 	GameState _gameState;
+
 };
 
 #endif // !MAINGAME_H

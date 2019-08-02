@@ -1,5 +1,6 @@
 #include "MainGame.h"
 #include <iostream>
+#include "Zombie.h"
 
 MainGame::MainGame():
 	_screenWidth(1024),
@@ -52,7 +53,7 @@ void MainGame::initLevel()
 	_currentLevel = 0;
 
 	_player = new Player();
-	_player->init(5.0f, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager);
+	_player->init(1.0f, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager);
 
 	_humans.push_back(_player);
 }
@@ -85,7 +86,7 @@ void MainGame::updateAgents()
 	// Update Player
 	for (int i = 0; i < _humans.size(); i++)
 	{
-		_humans[i]->update();
+		_humans[i]->update(_levels[_currentLevel]->getLevelData(),_humans,_zombies);
 	}
 
 	// Update the zombie

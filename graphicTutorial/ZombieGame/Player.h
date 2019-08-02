@@ -12,7 +12,9 @@ public:
 
 	void init(float speed,glm::vec2 pos, PandaEngine::InputManager* inputManager);
 
-	void update();
+	void update(const std::vector<std::string> & levelData,
+		std::vector<Human*>& humans,
+		std::vector<Zombie*>& zombies);
 
 private:
 	PandaEngine::InputManager* _inputManager;

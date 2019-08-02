@@ -69,10 +69,12 @@ Level::Level(const std::string& fileName)
 					whiteColor);
 				break;
 			case '@':
+				_levelData[y][x] = '.'; // So we dont collied with a @
 				_startPlayerPos.x = x * TILE_WIDTH;
 				_startPlayerPos.y = y * TILE_WIDTH;
 				break;
 			case 'Z':
+				_levelData[y][x] = '.'; // So we dont collied with a Z
 				_zombiesStartPos.emplace_back(x * TILE_WIDTH, y * TILE_WIDTH);
 				break;
 			case '.':

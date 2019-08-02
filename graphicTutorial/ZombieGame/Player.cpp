@@ -23,7 +23,9 @@ void Player::init(float speed, glm::vec2 pos, PandaEngine::InputManager* inputMa
 	_color.a = 255;
 }
 
-void Player::update()
+void Player::update(const std::vector<std::string> & levelData,
+	std::vector<Human*>& humans,
+	std::vector<Zombie*>& zombies)
 {
 	if (_inputManager->isKeyPressed(SDLK_a))
 	{
@@ -43,5 +45,5 @@ void Player::update()
 		_position.y -= _speed;
 
     }
- 
+	collideWithLevel(levelData);
 }
