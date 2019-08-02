@@ -1,6 +1,8 @@
 #include "MainGame.h"
 #include <iostream>
 #include "Zombie.h"
+#include <random>
+#include <ctime>
 
 MainGame::MainGame():
 	_screenWidth(1024),
@@ -53,9 +55,25 @@ void MainGame::initLevel()
 	_currentLevel = 0;
 
 	_player = new Player();
-	_player->init(1.0f, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager);
+	_player->init(5.0f, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager);
 
 	_humans.push_back(_player);
+
+	// Creating the random the position for human with in the level size
+	std::mt19937 randomEngine;
+	randomEngine.seed(time(nullptr));
+	std::uniform_int_distribution<int>randX(2, _levels[_currentLevel]->getWidth() - 2);
+	std::uniform_int_distribution<int>randY(2, _levels[_currentLevel]->getHeight() - 2);
+
+	const float HUMAN_SPEED = 1.0f;
+
+	// Add all the random humans
+	for (int i = 0; i < _levels[_currentLevel]->getNumberHuman(); i++)
+	{
+		_humans.push_back(new Human);
+		glm::vec2 pos(randX(randomEngine) * TILE_WIDTH, randY(randomEngine) * TILE_WIDTH);
+		_humans.back()->init(HUMAN_SPEED, pos);
+	}
 }
 
 // Main game loop for the program 
