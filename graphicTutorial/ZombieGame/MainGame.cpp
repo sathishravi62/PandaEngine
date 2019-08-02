@@ -1,36 +1,61 @@
 #include "MainGame.h"
+#include <iostream>
 
-
-
-MainGame::MainGame()
+MainGame::MainGame():
+	_screenWidth(1024),
+	_screenHeight(768),
+	_gameState(GameState::PLAY),
+	_fps(0.0f)
 {
 }
 
 
 MainGame::~MainGame()
 {
+	for (int i = 0; i < _levels.size(); i++)
+	{
+		delete _levels[i];
+	}
 }
 
 void MainGame::run() 
 {
+	initSystem();
 
+	gameLoop();
 }
 
 void MainGame::initSystem()
 {
+	PandaEngine::init();
 
+	_windows.create("ZombieGame", _screenWidth, _screenHeight,0);
+
+	initShader();
+
+	_levels.push_back(new Level("level/level.txt"));
 }
 
 // Initializes the Shader
 void MainGame::initShader()
 {
-	_textureProgram.compileShader("Shader/VertexShader.vert", "Shader/FragmentShader.frag");
+	_textureProgram.loadShaderFromFile("Shader/VertexShader.vert", "Shader/FragmentShader.frag");
 }
 
 // Main game loop for the program 
 void MainGame::gameLoop()
 {
+	PandaEngine::FpsLimiter fpsLimiter;
+	fpsLimiter.setMaxFPS(60.0f);
+	while (_gameState == GameState::PLAY)
+	{
+		fpsLimiter.begin();
 
+		processInput();
+		drawGame();
+
+		_fps = fpsLimiter.end();
+	}
 }
 
 // Handles input processing
