@@ -7,9 +7,11 @@
 #include <PandaEngine/InputManager.h>
 #include <PandaEngine/Camera2D.h>
 #include <PandaEngine/ResourceManager.h>
-#include <SDL/SDL.h>
 #include <PandaEngine/Timing.h>
+#include <PandaEngine/SpriteBatch.h>
+#include <SDL/SDL.h>
 
+#include "Player.h"
 #include "Level.h"
 #include <vector>
 
@@ -35,8 +37,14 @@ private:
 	// Initializes the Shader
 	void initShader();
 
+	// Initializes the Level
+	void initLevel();
+
 	// Main game loop for the program 
 	void gameLoop();
+
+	// Update all the agents
+	void updateAgents(); 
 
 	// Handles input processing
 	void processInput();
@@ -51,12 +59,17 @@ private:
 
 	PandaEngine::InputManager _inputManager; // Handles Input
 
-	PandaEngine::Camera2D _camera; // Main Camera
+	PandaEngine::Camera2D _camera; // Main Camera	
 
-	std::vector<Level*> _levels; // vertor of all levels;
+	PandaEngine::SpriteBatch _agentSpriteBatch; //  draw all agents
 
-	int _screenWidth, _screenHeight,_fps;
+	std::vector<Level*> _levels; // vector of all levels
 
+	Player* _player;
+	std::vector<Human*> _humans; // vector of all human
+
+	int _screenWidth, _screenHeight,_currentLevel;
+	float _fps;
 	GameState _gameState;
 };
 

@@ -5,7 +5,8 @@ MainGame::MainGame():
 	_screenWidth(1024),
 	_screenHeight(768),
 	_gameState(GameState::PLAY),
-	_fps(0.0f)
+	_fps(0.0f),
+	_player(nullptr)
 {
 }
 
@@ -21,7 +22,7 @@ MainGame::~MainGame()
 void MainGame::run() 
 {
 	initSystem();
-
+	initLevel();
 	gameLoop();
 }
 
@@ -30,16 +31,30 @@ void MainGame::initSystem()
 	PandaEngine::init();
 
 	_windows.create("ZombieGame", _screenWidth, _screenHeight,0);
-
+	glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
 	initShader();
 
-	_levels.push_back(new Level("level/level.txt"));
+	_agentSpriteBatch.init();
+	_camera.init(_screenWidth, _screenHeight);
+
+	
 }
 
 // Initializes the Shader
 void MainGame::initShader()
 {
 	_textureProgram.loadShaderFromFile("Shader/VertexShader.vert", "Shader/FragmentShader.frag");
+}
+
+void MainGame::initLevel()
+{
+	_levels.push_back(new Level("level/level.txt"));
+	_currentLevel = 0;
+
+	_player = new Player();
+	_player->init(5.0f, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager);
+
+	_humans.push_back(_player);
 }
 
 // Main game loop for the program 
@@ -51,11 +66,29 @@ void MainGame::gameLoop()
 	{
 		fpsLimiter.begin();
 
+		_camera.setPosition(_player->getPosition());
+
 		processInput();
+
+		updateAgents();
+
+		_camera.Update();	
+
 		drawGame();
 
 		_fps = fpsLimiter.end();
 	}
+}
+
+void MainGame::updateAgents()
+{
+	// Update Player
+	for (int i = 0; i < _humans.size(); i++)
+	{
+		_humans[i]->update();
+	}
+
+	// Update the zombie
 }
 
 // Handles input processing
@@ -109,6 +142,30 @@ void MainGame::drawGame()
 
 	// Draw Code here
 
+	_textureProgram.use();
+	//Active the texture
+	glActiveTexture(GL_TEXTURE0);
+	_textureProgram.SetInteger("image", 0, GL_FALSE);
+
+	// Grab the camera matrix
+	glm::mat4 projectionMatrix = _camera.getCameraMatrix();
+	_textureProgram.SetMatrix4("p", projectionMatrix, GL_FALSE);
+
+	// Draw the level
+	_levels[_currentLevel]->draw();
+
+	//Begin sprite batch human
+	_agentSpriteBatch.begin();
+
+	// draw the humans and player
+	for (int i = 0; i < _humans.size(); i++)
+	{
+		_humans[i]->draw(_agentSpriteBatch);
+	}
+
+	_agentSpriteBatch.end();
+
+	_agentSpriteBatch.renderbatch();
 
 	// Swap the buffer and draw everything to the screen
 	_windows.swapBuffer();

@@ -17,13 +17,18 @@ public:
 
 	void draw();
 
+	//Getter
+	glm::vec2 getStartPlayerPos() const { return _startPlayerPos; }
+	const std::vector<glm::vec2>& getStartZombiePos() const { return _zombiesStartPos; }
+	
+
 private:
 	std::vector<std::string> _levelData;
 	int _numHumans;
 	PandaEngine::SpriteBatch _spriteBatch;
 
-	glm::ivec2 _startPlayerPos;
-	std::vector<glm::ivec2> _zombiesStartPos;
+	glm::vec2 _startPlayerPos;
+	std::vector<glm::vec2> _zombiesStartPos;
 	
 };
 

@@ -7,7 +7,10 @@ class Human : public Agent
 {
 public:
 	Human();
-	~Human();
+    virtual ~Human();	
+
+	virtual void update();
+
 };
 
 #endif // !HUMAN_H

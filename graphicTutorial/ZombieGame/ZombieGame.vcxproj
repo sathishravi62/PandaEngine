@@ -138,6 +138,10 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Zombie.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Shader\FragmentShader.frag" />
+    <None Include="Shader\VertexShader.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

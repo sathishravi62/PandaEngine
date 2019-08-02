@@ -27,6 +27,7 @@ Level::Level(const std::string& fileName)
 	{
 		_levelData.push_back(temp);
 	}
+	_spriteBatch.init();
 	_spriteBatch.begin();
 
 	glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
@@ -50,6 +51,7 @@ Level::Level(const std::string& fileName)
 
 			switch (tile)
 			{
+			case 'B':
 			case 'R':
 				_spriteBatch.draw(destRect, uvRect, 
 					PandaEngine::ResourceManager::getTexture("texture/redbrick.png", GL_TRUE).ID,0.0f,

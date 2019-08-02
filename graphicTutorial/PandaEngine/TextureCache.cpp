@@ -24,11 +24,9 @@ namespace PandaEngine {
 			newTexture.LoadTexture(Path, alpha);
 
 			_textureMap.insert(make_pair(texturePath, newTexture));
-			std::cout << "LOADED  TEXTURE \n";
 
 			return newTexture;
 		}
-		std::cout << "USED CHACHED TEXTURE \n";
 		return mit->second;
 	}
 }
