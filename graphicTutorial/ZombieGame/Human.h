@@ -17,6 +17,7 @@ public:
 
 private:
 	glm::vec2 _direction;
+	int _frame;
 };
 
 #endif // !HUMAN_H

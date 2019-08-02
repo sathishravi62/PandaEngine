@@ -16,7 +16,7 @@ void Agent::update(const std::vector<std::string>& levelData, std::vector<Human*
 {
 }
 
-void Agent::collideWithLevel(const std::vector<std::string>& levelData)
+bool Agent::collideWithLevel(const std::vector<std::string>& levelData)
 {
 	std::vector<glm::vec2> collideTilePos;
 
@@ -33,12 +33,17 @@ void Agent::collideWithLevel(const std::vector<std::string>& levelData)
 	//four corner
 	checkTilePosition(collideTilePos, _position.x + AGENT_WIDTH, _position.y + AGENT_WIDTH, levelData);
 
+	if (collideTilePos.size() == 0)
+	{
+		return false;
+	}
 	// Do the Collision
-
 	for (int i = 0; i < collideTilePos.size(); i++)
 	{
 		collideWithTile(collideTilePos[i]);
 	}
+
+	return true;
 }
 
 void Agent::draw(PandaEngine::SpriteBatch & _spriteBatch)

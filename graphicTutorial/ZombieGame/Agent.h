@@ -22,7 +22,7 @@ public:
 						std::vector<Human*>& humans,
 						std::vector<Zombie*>& zombies) = 0;
 
-	void collideWithLevel(const std::vector<std::string> & levelData);
+	bool collideWithLevel(const std::vector<std::string> & levelData);
 
 	void draw(PandaEngine::SpriteBatch& _spriteBatch);
 
