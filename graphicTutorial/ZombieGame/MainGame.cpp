@@ -107,7 +107,16 @@ void MainGame::updateAgents()
 		_humans[i]->update(_levels[_currentLevel]->getLevelData(),_humans,_zombies);
 	}
 
-	// Update the zombie
+	// Update Collision
+	for (int i = 0; i < _humans.size(); i++)
+	{
+		for (int j = i + 1; j < _humans.size(); j++)
+		{
+			_humans[i]->collidewithAgent(_humans[j]);
+		}
+	}
+
+	//TODO:: Update the zombie
 }
 
 // Handles input processing

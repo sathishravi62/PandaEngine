@@ -5,7 +5,8 @@
 #include <PandaEngine/SpriteBatch.h>
 
 
-const float AGENT_WIDTH = 60;
+const float AGENT_WIDTH = 60.0f;
+const float AGENT_RADIUS = (float)AGENT_WIDTH / 2.0f;
 
 class Zombie;
 class Human;
@@ -23,6 +24,8 @@ public:
 						std::vector<Zombie*>& zombies) = 0;
 
 	bool collideWithLevel(const std::vector<std::string> & levelData);
+
+	bool collidewithAgent(Agent* agent);
 
 	void draw(PandaEngine::SpriteBatch& _spriteBatch);
 

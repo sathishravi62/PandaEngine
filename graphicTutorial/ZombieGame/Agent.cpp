@@ -46,6 +46,35 @@ bool Agent::collideWithLevel(const std::vector<std::string>& levelData)
 	return true;
 }
 
+bool Agent::collidewithAgent(Agent * agent)
+{
+	const float MIN_DISTANCE = AGENT_RADIUS * 2.0f;
+
+	glm::vec2 centerPosA = _position + glm::vec2(AGENT_RADIUS);  
+	glm::vec2 centerPosB = agent->getPosition() + glm::vec2(AGENT_RADIUS);
+
+	glm::vec2 distVec = centerPosA - centerPosB;
+
+	float distance = glm::length(distVec);
+
+	float collisionDepth = MIN_DISTANCE - distance;
+
+	if (collisionDepth > 0)
+	{
+		glm::vec2 collisionDepthVec = glm::normalize(distVec) * collisionDepth;
+
+		_position += collisionDepthVec / 2.0f;
+		
+		agent->_position -= collisionDepthVec / 2.0f;
+		
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
 void Agent::draw(PandaEngine::SpriteBatch & _spriteBatch)
 {
 	static int textureID = PandaEngine::ResourceManager::getTexture("texture/circle.png", GL_TRUE).ID;
@@ -81,7 +110,7 @@ void Agent::checkTilePosition(std::vector<glm::vec2>& collideTilePos, float x, f
 // AABB collison
 void Agent::collideWithTile(glm::vec2 tilePos)
 {
-	const float AGENT_RADIUS = (float)AGENT_WIDTH / 2.0f;
+	
 	const float TILE_RADIUS = (float)TILE_WIDTH / 2.0f;
 	const float MIN_DISTANCE = AGENT_RADIUS + TILE_RADIUS;
 
