@@ -15,8 +15,8 @@ Human::~Human()
 void Human::init(float speed, glm::vec2 pos)
 {
 	static std::mt19937 randomEngine(time(nullptr));
-
 	static std::uniform_real_distribution<float>randDir(-1.0f, 1.0f);
+
 	_speed = speed;
 	_position = pos;
 
@@ -25,6 +25,7 @@ void Human::init(float speed, glm::vec2 pos)
 	_color.b = 200;
 	_color.a = 255;
 	
+	_health = 20;
 	// Getting the Random direction
 	_direction = glm::vec2(randDir(randomEngine), randDir(randomEngine));
 

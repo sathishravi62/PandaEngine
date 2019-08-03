@@ -20,6 +20,7 @@ void Zombie::init(float speed, glm::vec2 pos)
 	_color.b = 0;
 	_color.a = 255;
 
+	_health = 150;
 
 }
 

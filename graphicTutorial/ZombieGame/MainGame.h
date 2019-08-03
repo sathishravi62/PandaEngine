@@ -12,9 +12,11 @@
 #include <PandaEngine/Error.h>
 #include <SDL/SDL.h>
 
+#include "Gun.h"
 #include "Player.h"
 #include "Level.h"
 #include <vector>
+#include "Bullet.h"
 
 class Zombie;
 
@@ -49,6 +51,9 @@ private:
 	// Update all the agents
 	void updateAgents(); 
 
+	// Update bullets
+	void updateBullets();
+
 	// Handles input processing
 	void processInput();
 
@@ -73,6 +78,8 @@ private:
 	std::vector<Human*> _humans; // vector of all human
 
 	std::vector<Zombie*> _zombies; // vector of all zombies
+
+	std::vector<Bullet> _bullets; // vector of all Bullets
 
 	int _screenWidth, _screenHeight,_currentLevel;
 

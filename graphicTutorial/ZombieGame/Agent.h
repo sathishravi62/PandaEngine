@@ -27,6 +27,9 @@ public:
 
 	bool collidewithAgent(Agent* agent);
 
+	// return true if we died
+	bool applyDamage(float damage);
+
 	void draw(PandaEngine::SpriteBatch& _spriteBatch);
 
 	glm::vec2 getPosition() const { return _position; }
@@ -39,6 +42,7 @@ protected:
 
 	glm::vec2 _position;
 	float _speed;
+	float _health;
 	PandaEngine::Color _color;
 };
 

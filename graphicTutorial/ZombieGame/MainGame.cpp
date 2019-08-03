@@ -60,7 +60,7 @@ void MainGame::initLevel()
 	_currentLevel = 0;
 
 	_player = new Player();
-	_player->init(PLAYER_SPEED, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager);
+	_player->init(PLAYER_SPEED, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager,&_camera,&_bullets);
 
 	_humans.push_back(_player);
 
@@ -86,7 +86,13 @@ void MainGame::initLevel()
 		_zombies.push_back(new Zombie);
 		_zombies.back()->init(ZOMBIE_SPEED, zombiePosition[i]);
 	}
-}
+
+	// set up the player gun
+	const float BULLET_SPEED = 20.0f;
+	_player->addGun(new Gun("Magnum",  10, 1,  0.5f, BULLET_SPEED, 30.0f));
+	_player->addGun(new Gun("Shotgun", 30, 12, 0.5f, BULLET_SPEED, 4.0f));
+	_player->addGun(new Gun("MP5",     2,  1,  0.5f, BULLET_SPEED, 20.0f));
+} 
 
 // Main game loop for the program 
 void MainGame::gameLoop()
@@ -102,6 +108,8 @@ void MainGame::gameLoop()
 		processInput();
 
 		updateAgents();
+
+		updateBullets();
 
 		_camera.Update();	
 
@@ -151,10 +159,10 @@ void MainGame::updateAgents()
 		}
 		
 		// collied with player
-		if (_zombies[i]->collidewithAgent(_player))
+		/*if (_zombies[i]->collidewithAgent(_player))
 		{
 			PandaEngine::fatalError("You LOSE");
-		}
+		}*/
 	}
 
 
@@ -170,6 +178,59 @@ void MainGame::updateAgents()
 	}
 
 	
+}
+
+void MainGame::updateBullets()
+{
+	// update and collied with bullet
+	for (int i = 0; i < _bullets.size();)
+	{
+		//if update return true,the bullet collided with the wall
+		if (_bullets[i].update(_levels[_currentLevel]->getLevelData()))
+		{
+			_bullets[i] = _bullets.back();
+			_bullets.pop_back();
+		}
+		else
+		{
+			i++;
+		}
+
+	}
+
+	// colliding with human and zombies
+	for (int i = 0; i < _bullets.size(); i++)
+	{
+		// loop through zombies
+		for (int j = 0; j < _zombies.size();)
+		{
+			// checking collision
+			if (_bullets[i].colliedWithAgent(_zombies[j]))
+			{   
+				// Damage zombie, and kill it if its out of health
+				if (_zombies[j]->applyDamage(_bullets[i].getDamage()))
+				{
+					delete _zombies[j];
+					_zombies[j] = _zombies.back();
+					_zombies.pop_back();
+				}
+				else
+				{
+					j++;
+				}
+				// Remove the bullet
+				_bullets[i] = _bullets.back();
+				_bullets.pop_back();
+				i--; // make sure we don't skip a bullet
+				// Since the bullets died, no need to loop throught any more zombies
+				break;
+			}
+			else
+			{
+				j++;
+			}
+		}
+	}
 }
 
 // Handles input processing
@@ -247,6 +308,12 @@ void MainGame::drawGame()
 	for (int i = 0; i < _zombies.size(); i++)
 	{
 		_zombies[i]->draw(_agentSpriteBatch);
+	}
+
+	// draw the bullets
+	for (int i = 0; i < _bullets.size(); i++)
+	{
+		_bullets[i].draw(_agentSpriteBatch);
 	}
 
 	_agentSpriteBatch.end();

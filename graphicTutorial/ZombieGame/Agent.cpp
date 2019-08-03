@@ -76,6 +76,16 @@ bool Agent::collidewithAgent(Agent * agent)
 	}
 }
 
+bool Agent::applyDamage(float damage)
+{
+	_health -= damage;
+	if (_health <= 0)
+	{
+		return true;
+	}
+	return false;
+}
+
 void Agent::draw(PandaEngine::SpriteBatch & _spriteBatch)
 {
 	static int textureID = PandaEngine::ResourceManager::getTexture("texture/circle.png", GL_TRUE).ID;
@@ -96,10 +106,11 @@ void Agent::checkTilePosition(std::vector<glm::vec2>& collideTilePos, float x, f
 	// check the four corner
 	glm::vec2 cornerPos = glm::vec2(floor(x / (float)TILE_WIDTH), floor(y / (float)TILE_WIDTH));
 
+	// if we are outside of the world, just return
 	if (cornerPos.x < 0 || cornerPos.x >= levelData[0].size() ||
 		cornerPos.y < 0 || cornerPos.y >= levelData.size())
 	{
-		return;
+		return; 
 	}
 
 	if (levelData[cornerPos.y][cornerPos.x] != '.')
