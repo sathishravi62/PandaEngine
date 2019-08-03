@@ -110,7 +110,11 @@ void MainGame::initLevel()
 void MainGame::gameLoop()
 {
 	PandaEngine::FpsLimiter fpsLimiter;
-	fpsLimiter.setMaxFPS(60.0f);
+	fpsLimiter.setMaxFPS(6000.0f);
+
+	const float CAMERA_SCALE = 1.0f / 4.0f;
+	_camera.setScale(CAMERA_SCALE);
+
 	while (_gameState == GameState::PLAY)
 	{
 		fpsLimiter.begin();
@@ -130,6 +134,8 @@ void MainGame::gameLoop()
 		drawGame();
 
 		_fps = fpsLimiter.end();
+
+		std::cout << _fps << std::endl;
 	}
 
 	SDL_Quit();
