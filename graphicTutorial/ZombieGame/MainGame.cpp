@@ -4,6 +4,11 @@
 #include <random>
 #include <ctime>
 
+const float HUMAN_SPEED = 1.0f;
+const float ZOMBIE_SPEED = 1.3f;
+const float PLAYER_SPEED = 5.0f;
+
+
 MainGame::MainGame():
 	_screenWidth(1024),
 	_screenHeight(768),
@@ -55,7 +60,7 @@ void MainGame::initLevel()
 	_currentLevel = 0;
 
 	_player = new Player();
-	_player->init(5.0f, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager);
+	_player->init(PLAYER_SPEED, _levels[_currentLevel]->getStartPlayerPos(), &_inputManager);
 
 	_humans.push_back(_player);
 
@@ -65,14 +70,21 @@ void MainGame::initLevel()
 	std::uniform_int_distribution<int>randX(2, _levels[_currentLevel]->getWidth() - 2);
 	std::uniform_int_distribution<int>randY(2, _levels[_currentLevel]->getHeight() - 2);
 
-	const float HUMAN_SPEED = 1.0f;
-
+	
 	// Add all the random humans
 	for (int i = 0; i < _levels[_currentLevel]->getNumberHuman(); i++)
 	{
 		_humans.push_back(new Human);
 		glm::vec2 pos(randX(randomEngine) * TILE_WIDTH, randY(randomEngine) * TILE_WIDTH);
 		_humans.back()->init(HUMAN_SPEED, pos);
+	}
+
+	// Add the Zombies
+	const std::vector<glm::vec2>& zombiePosition = _levels[_currentLevel]->getZombieStartPos();
+	for (int i = 0; i < zombiePosition.size(); i++)
+	{
+		_zombies.push_back(new Zombie);
+		_zombies.back()->init(ZOMBIE_SPEED, zombiePosition[i]);
 	}
 }
 
@@ -107,16 +119,57 @@ void MainGame::updateAgents()
 		_humans[i]->update(_levels[_currentLevel]->getLevelData(),_humans,_zombies);
 	}
 
-	// Update Collision
+	// Update the zombie
+
+	for (int i = 0; i < _zombies.size(); i++)
+	{
+		_zombies[i]->update(_levels[_currentLevel]->getLevelData(), _humans, _zombies);
+	}
+
+	// Update zombie Collision
+	for (int i = 0; i < _zombies.size(); i++)
+	{
+		// collied with other zombie
+		for (int j = i + 1; j < _zombies.size(); j++)
+		{
+			_humans[i]->collidewithAgent(_zombies[j]);
+		}
+		// collied with human
+		for (int j = 1; j < _humans.size(); j++) //j = 0 repersent player
+		{
+			if (_zombies[i]->collidewithAgent(_humans[j]))
+			{
+				// Add new Zombie
+				_zombies.push_back(new Zombie);
+				_zombies.back()->init(ZOMBIE_SPEED, _humans[j]->getPosition());
+
+				// Delete the human
+				delete _humans[j];
+				_humans[j] = _humans.back();
+				_humans.pop_back();
+			}
+		}
+		
+		// collied with player
+		if (_zombies[i]->collidewithAgent(_player))
+		{
+			PandaEngine::fatalError("You LOSE");
+		}
+	}
+
+
+
+	// Update human Collision
 	for (int i = 0; i < _humans.size(); i++)
 	{
+		// collied with other human
 		for (int j = i + 1; j < _humans.size(); j++)
 		{
 			_humans[i]->collidewithAgent(_humans[j]);
 		}
 	}
 
-	//TODO:: Update the zombie
+	
 }
 
 // Handles input processing
@@ -189,6 +242,11 @@ void MainGame::drawGame()
 	for (int i = 0; i < _humans.size(); i++)
 	{
 		_humans[i]->draw(_agentSpriteBatch);
+	}
+	// draw the zombie
+	for (int i = 0; i < _zombies.size(); i++)
+	{
+		_zombies[i]->draw(_agentSpriteBatch);
 	}
 
 	_agentSpriteBatch.end();

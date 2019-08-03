@@ -9,6 +9,7 @@
 #include <PandaEngine/ResourceManager.h>
 #include <PandaEngine/Timing.h>
 #include <PandaEngine/SpriteBatch.h>
+#include <PandaEngine/Error.h>
 #include <SDL/SDL.h>
 
 #include "Player.h"
