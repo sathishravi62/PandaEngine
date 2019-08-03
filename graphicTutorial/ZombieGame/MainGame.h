@@ -54,6 +54,8 @@ private:
 	// Update bullets
 	void updateBullets();
 
+	void checkWinCondition(); // check the win condition
+
 	// Handles input processing
 	void processInput();
 
@@ -81,8 +83,11 @@ private:
 
 	std::vector<Bullet> _bullets; // vector of all Bullets
 
-	int _screenWidth, _screenHeight,_currentLevel;
+	int _screenWidth, _screenHeight, _currentLevel;
 
+	int _numHumanKilled;  // Human killed by player
+	int _numZombieKilled; // Zombie killed by player
+	 
 	float _fps;	
 
 	GameState _gameState;
