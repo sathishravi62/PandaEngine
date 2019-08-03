@@ -305,7 +305,7 @@ void MainGame::processInput()
 		switch (SdlEvent.type)
 		{
 		case SDL_QUIT:
-			 // Exit the game here
+			_gameState = GameState::EXIT;
 			break;
 
 		case SDL_MOUSEMOTION:
