@@ -134,7 +134,7 @@ void Agent::collideWithTile(glm::vec2 tilePos)
 	float yDepth = MIN_DISTANCE - abs(distVec.y);
 
 	// if this is true, we are colliding
-	if (xDepth > 0 || yDepth > 0)
+	if (xDepth > 0 && yDepth > 0)
 	{
 		if (std::max(xDepth,0.0f) < std::max(yDepth,0.0f))
 		{
