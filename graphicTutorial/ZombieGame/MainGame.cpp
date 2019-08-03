@@ -121,7 +121,7 @@ void MainGame::gameLoop()
 		
 		checkWinCondition();
 
-		_camera.setPosition(_player->getPosition());
+		_inputManager.update();
 
 		processInput();
 
@@ -129,6 +129,7 @@ void MainGame::gameLoop()
 
 		updateBullets();
 
+		_camera.setPosition(_player->getPosition());
 		_camera.Update();	
 
 		drawGame();

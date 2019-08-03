@@ -43,7 +43,7 @@ protected:
 	glm::vec2 _position;
 	float _speed;
 	float _health;
-	PandaEngine::Color _color;
+	PandaEngine::ColorRGBA8 _color;
 };
 
 #endif // !AGENT_H

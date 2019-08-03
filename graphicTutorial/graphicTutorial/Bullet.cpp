@@ -23,7 +23,7 @@ void Bullet::draw(PandaEngine::SpriteBatch & spriteBatch)
 	glm::vec4 uv(0.0f, 0.0f, 1.0f, 1.0f);
 	static PandaEngine::Texture texture = PandaEngine::ResourceManager::getTexture("texture/boy.png", GL_TRUE);
 
-	PandaEngine::Color color;
+	PandaEngine::ColorRGBA8 color;
 	color.r = 255;
 	color.g = 255;
 	color.b = 255;

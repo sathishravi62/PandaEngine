@@ -56,7 +56,7 @@ namespace PandaEngine {
 
 		void end();
 
-		void draw(const glm::vec4& dectRect, const glm::vec4& uvRect, GLuint textureId, float depth, const Color& color);
+		void draw(const glm::vec4& dectRect, const glm::vec4& uvRect, GLuint textureId, float depth, const ColorRGBA8& color);
 
 		void renderbatch();
 

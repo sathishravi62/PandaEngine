@@ -32,7 +32,7 @@ namespace PandaEngine {
 		createRenderBatchs();
 	}
 
-	void SpriteBatch::draw(const glm::vec4 & dectRect, const glm::vec4 & uvRect, GLuint textureId, float depth, const Color & color)
+	void SpriteBatch::draw(const glm::vec4 & dectRect, const glm::vec4 & uvRect, GLuint textureId, float depth, const ColorRGBA8 & color)
 	{
 		Glyph* newGlyph = new Glyph;
 		newGlyph->textureId = textureId;

@@ -26,7 +26,7 @@ void Bullet::draw(PandaEngine::SpriteBatch& spriteBatch)
 {
 	glm::vec4 desRect(_position.x + BULLET_RADIUS, _position.y + BULLET_RADIUS, BULLET_RADIUS * 2, BULLET_RADIUS * 2);
 	const glm::vec4 UvRect(0.0f, 0.0f, 1.0f, 1.0f);
-	PandaEngine::Color color;
+	PandaEngine::ColorRGBA8 color;
 	color.r = 75;
 	color.g = 75;
 	color.b = 75;
