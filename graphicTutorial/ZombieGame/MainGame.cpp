@@ -27,6 +27,16 @@ MainGame::~MainGame()
 	{
 		delete _levels[i];
 	}
+
+	for (int i = 0; i < _humans.size(); i++)
+	{
+		delete _humans[i];
+	}
+
+	for (int i = 0; i < _zombies.size(); i++)
+	{
+		delete _zombies[i];
+	}
 }
 
 void MainGame::run() 
