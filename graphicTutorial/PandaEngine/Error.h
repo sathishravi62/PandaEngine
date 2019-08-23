@@ -1,7 +1,7 @@
 #ifndef  ERROR_H
 #define ERROR_H
 
-#include<string>
+#include <string>
 
 namespace PandaEngine {
 

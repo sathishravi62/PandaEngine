@@ -49,10 +49,10 @@ private:
 	void gameLoop();
 
 	// Update all the agents
-	void updateAgents(); 
+	void updateAgents(float deltaTime); 
 
 	// Update bullets
-	void updateBullets();
+	void updateBullets(float deltaTime);
 
 	void checkWinCondition(); // check the win condition
 

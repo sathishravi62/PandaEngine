@@ -3,6 +3,7 @@
 #include "Zombie.h"
 #include <random>
 #include <ctime>
+#include <algorithm>
 
 const float HUMAN_SPEED = 1.0f;
 const float ZOMBIE_SPEED = 1.3f;
@@ -50,7 +51,7 @@ void MainGame::initSystem()
 {
 	PandaEngine::init();
 
-	_windows.create("ZombieGame", _screenWidth, _screenHeight,0);
+	_windows.create("ZombieGame", _screenWidth, _screenHeight,PandaEngine::FULLSCREEN);
 	glClearColor(0.4f, 0.4f, 0.4f, 1.0f);
 	initShader();
 
@@ -109,25 +110,49 @@ void MainGame::initLevel()
 // Main game loop for the program 
 void MainGame::gameLoop()
 {
+	const float DESIRED_FPS = 60.0f;
+	const int MAX_PHYSICS_STEPS = 6;
+
 	PandaEngine::FpsLimiter fpsLimiter;
 	fpsLimiter.setMaxFPS(6000.0f);
 
-	const float CAMERA_SCALE = 1.0f / 4.0f;
+	const float CAMERA_SCALE = 1.0f / 2.0f;
 	_camera.setScale(CAMERA_SCALE);
+
+	const float MS_PER_SECOND = 1000;
+	const float DESIRED_FRAMETIME = MS_PER_SECOND / DESIRED_FPS;
+
+	const float MAX_DELTA_TIME = 1.0f;
+
+	 float PreviousTicks = SDL_GetTicks();
 
 	while (_gameState == GameState::PLAY)
 	{
 		fpsLimiter.begin();
 		
+		float newTicks = SDL_GetTicks();
+		float frameTime = SDL_GetTicks() - PreviousTicks;
+		PreviousTicks = newTicks;
+
+		float totalDeltaTime = frameTime / DESIRED_FRAMETIME;
+
 		checkWinCondition();
 
 		_inputManager.update();
 
 		processInput();
 
-		updateAgents();
+		int i = 0;
+		while (totalDeltaTime > 0.0f && i < MAX_PHYSICS_STEPS)
+		{
+			float deltaTime = std::min(totalDeltaTime, MAX_DELTA_TIME);
+			updateAgents(deltaTime);
 
-		updateBullets();
+			updateBullets(deltaTime);
+
+			totalDeltaTime -= deltaTime;
+			i++;
+		}
 
 		_camera.setPosition(_player->getPosition());
 		_camera.Update();	
@@ -136,25 +161,25 @@ void MainGame::gameLoop()
 
 		_fps = fpsLimiter.end();
 
-		std::cout << _fps << std::endl;
+		//std::cout << _fps << std::endl;
 	}
 
 	SDL_Quit();
 }
 
-void MainGame::updateAgents()
+void MainGame::updateAgents(float deltaTime)
 {
 	// Update Player
 	for (int i = 0; i < _humans.size(); i++)
 	{
-		_humans[i]->update(_levels[_currentLevel]->getLevelData(),_humans,_zombies);
+		_humans[i]->update(_levels[_currentLevel]->getLevelData(),_humans,_zombies, deltaTime);
 	}
 
 	// Update the zombie
 
 	for (int i = 0; i < _zombies.size(); i++)
 	{
-		_zombies[i]->update(_levels[_currentLevel]->getLevelData(), _humans, _zombies);
+		_zombies[i]->update(_levels[_currentLevel]->getLevelData(), _humans, _zombies, deltaTime);
 	}
 
 	// Update zombie Collision
@@ -203,13 +228,13 @@ void MainGame::updateAgents()
 	
 }
 
-void MainGame::updateBullets()
+void MainGame::updateBullets(float deltaTime)
 {
 	// update and collied with bullet
 	for (int i = 0; i < _bullets.size();)
 	{
 		//if update return true,the bullet collided with the wall
-		if (_bullets[i].update(_levels[_currentLevel]->getLevelData()))
+		if (_bullets[i].update(_levels[_currentLevel]->getLevelData(), deltaTime))
 		{
 			_bullets[i] = _bullets.back();
 			_bullets.pop_back();

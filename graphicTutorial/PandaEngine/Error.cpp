@@ -7,8 +7,6 @@ namespace PandaEngine {
 	{
 		std::cout << errorString << std::endl;
 		std::cout << "Enter any key to quit....." << std::endl;
-		int tmp;
-		std::cin >> tmp;
 		SDL_Quit();
 	}
 }
