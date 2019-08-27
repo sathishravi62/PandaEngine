@@ -124,20 +124,25 @@ void Agent::collideWithTile(glm::vec2 tilePos)
 {
 	
 	const float TILE_RADIUS = (float)TILE_WIDTH / 2.0f;
+	// The minimum distance before a collision occurs
 	const float MIN_DISTANCE = AGENT_RADIUS + TILE_RADIUS;
 
+	// center position of the agent
 	glm::vec2 centerPlayerPos = _position + glm::vec2(AGENT_RADIUS); 
-
+	// vector from the agent to the tile
 	glm::vec2 distVec = centerPlayerPos - tilePos;
 	
+	// get the depth of the collision
 	float xDepth = MIN_DISTANCE - abs(distVec.x);
 	float yDepth = MIN_DISTANCE - abs(distVec.y);
 
-	// if this is true, we are colliding
+	// if either the depths are > 0, then we are collided
 	if (xDepth > 0 && yDepth > 0)
 	{
+		// Check with collision depth is less
 		if (std::max(xDepth,0.0f) < std::max(yDepth,0.0f))
 		{
+			// X collison depth is smaller so we push in X direction
 			if (distVec.x < 0)
 			{
 				_position.x -= xDepth;
@@ -149,6 +154,7 @@ void Agent::collideWithTile(glm::vec2 tilePos)
 		}
 		else
 		{
+			// Y collison depth is smaller so we push in Y direction
 			if (distVec.y < 0)
 			{
 				_position.y -= yDepth;

@@ -55,4 +55,33 @@ namespace PandaEngine {
 
 		return screenCords;
 	}
+	bool Camera2D::isBoxInView(const glm::vec2 & position, const glm::vec2 & dimensions)
+	{
+	
+		glm::vec2 scaledScreenDimension = glm::vec2(_screenWidth, _screenHeight) / (_scale * 2.0f);
+
+		// The minimum distance before a collision occurs
+		const float MIN_DISTANCE_X = dimensions.x / 2.0f + scaledScreenDimension.x / 2.0f;
+		const float MIN_DISTANCE_Y = dimensions.y / 2.0f + scaledScreenDimension.y / 2.0f;
+
+		// center position of the Object
+		glm::vec2 centerPos = position + dimensions / 2.0f;
+
+		// center position of the camera
+		glm::vec2 centerCameraPos = _position;
+		// vector from the input to the camera
+		glm::vec2 distVec = centerPos - centerCameraPos;
+
+		// get the depth of the collision
+		float xDepth = MIN_DISTANCE_X - abs(distVec.x);
+		float yDepth = MIN_DISTANCE_Y - abs(distVec.y);
+
+		// if either the depths are > 0, then we are collided
+		if (xDepth > 0 && yDepth > 0)
+		{
+			// There was a collision so return true
+			return true;
+		}
+		return false;
+	}
 }

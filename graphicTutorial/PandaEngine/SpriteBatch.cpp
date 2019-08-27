@@ -19,42 +19,24 @@ namespace PandaEngine {
 	{
 		_sortType = sortType;
 		_renderbatchs.clear();
-		for (int i = 0; i < _glyphs.size(); i++)
-		{
-			delete _glyphs[i]; 
-		}
 		_glyphs.clear();
 
 	}
 	void SpriteBatch::end()
 	{
+		_glyphPointer.resize(_glyphs.size());
+		for (int i = 0; i < _glyphs.size(); i++)
+		{
+			_glyphPointer[i] = &_glyphs[i];
+		}
 		sortGlyphs();
 		createRenderBatchs();
 	}
 
+	/* Draw Function it will create a new glyph and add it to the _glyphs vector*/
 	void SpriteBatch::draw(const glm::vec4 & dectRect, const glm::vec4 & uvRect, GLuint textureId, float depth, const ColorRGBA8 & color)
 	{
-		Glyph* newGlyph = new Glyph;
-		newGlyph->textureId = textureId;
-		newGlyph->depth = depth;
-
-		newGlyph->topLeft.color = color;
-		newGlyph->topLeft.setPosition(dectRect.x,dectRect.y + dectRect.w);
-		newGlyph->topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
-
-		newGlyph->bottomLeft.color = color;
-		newGlyph->bottomLeft.setPosition(dectRect.x, dectRect.y);
-		newGlyph->bottomLeft.setUV(uvRect.x, uvRect.y);
-
-		newGlyph->bottomRight.color = color;
-		newGlyph->bottomRight.setPosition(dectRect.x + dectRect.z, dectRect.y);
-		newGlyph->bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
-
-		newGlyph->topRight.color = color;
-		newGlyph->topRight.setPosition(dectRect.x + dectRect.z, dectRect.y + dectRect.w);
-		newGlyph->topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
-
-		_glyphs.push_back(newGlyph);
+		_glyphs.emplace_back(dectRect,uvRect,textureId,depth,color);
 	}
 
 	void SpriteBatch::renderbatch()
@@ -80,32 +62,32 @@ namespace PandaEngine {
 		int offset = 0;
 		int cv = 0; // current vertex
 
-		_renderbatchs.emplace_back(offset, 6, _glyphs[0]->textureId);
-		vertices[cv++] = _glyphs[0]->topLeft;
-		vertices[cv++] = _glyphs[0]->bottomLeft;
-		vertices[cv++] = _glyphs[0]->bottomRight;
-		vertices[cv++] = _glyphs[0]->bottomRight;
-		vertices[cv++] = _glyphs[0]->topRight;
-		vertices[cv++] = _glyphs[0]->topLeft;
+		_renderbatchs.emplace_back(offset, 6, _glyphPointer[0]->textureId);
+		vertices[cv++] = _glyphPointer[0]->topLeft;
+		vertices[cv++] = _glyphPointer[0]->bottomLeft;
+		vertices[cv++] = _glyphPointer[0]->bottomRight;
+		vertices[cv++] = _glyphPointer[0]->bottomRight;
+		vertices[cv++] = _glyphPointer[0]->topRight;
+		vertices[cv++] = _glyphPointer[0]->topLeft;
 		offset += 6;
 
 		for (int cg = 1; cg < _glyphs.size(); cg++)
 		{
-			if (_glyphs[cg]->textureId != _glyphs[cg - 1]->textureId)
+			if (_glyphPointer[cg]->textureId != _glyphPointer[cg - 1]->textureId)
 			{
-				_renderbatchs.emplace_back(offset, 6, _glyphs[cg]->textureId);
+				_renderbatchs.emplace_back(offset, 6, _glyphPointer[cg]->textureId);
 			}
 			else
 			{
 				_renderbatchs.back().numVertices += 6;
 			}
 			
-			vertices[cv++] = _glyphs[cg]->topLeft;
-			vertices[cv++] = _glyphs[cg]->bottomLeft;
-			vertices[cv++] = _glyphs[cg]->bottomRight;
-			vertices[cv++] = _glyphs[cg]->bottomRight;
-			vertices[cv++] = _glyphs[cg]->topRight;
-			vertices[cv++] = _glyphs[cg]->topLeft;
+			vertices[cv++] = _glyphPointer[cg]->topLeft;
+			vertices[cv++] = _glyphPointer[cg]->bottomLeft;
+			vertices[cv++] = _glyphPointer[cg]->bottomRight;
+			vertices[cv++] = _glyphPointer[cg]->bottomRight;
+			vertices[cv++] = _glyphPointer[cg]->topRight;
+			vertices[cv++] = _glyphPointer[cg]->topLeft;
 			offset += 6;
 		}
 
@@ -144,13 +126,13 @@ namespace PandaEngine {
 		switch (_sortType)
 		{
 		case PandaEngine::GlyphSortType::FRONT_TO_BACK:
-			std::stable_sort(_glyphs.begin(), _glyphs.end(), compareFrontToBack);
+			std::stable_sort(_glyphPointer.begin(), _glyphPointer.end(), compareFrontToBack);
 			break;
 		case PandaEngine::GlyphSortType::BACK_TO_FRONT:
-			std::stable_sort(_glyphs.begin(), _glyphs.end(),compareBackToFront);
+			std::stable_sort(_glyphPointer.begin(), _glyphPointer.end(),compareBackToFront);
 			break;
 		case PandaEngine::GlyphSortType::TEXTURE:
-			std::stable_sort(_glyphs.begin(), _glyphs.end(),compareTexture);
+			std::stable_sort(_glyphPointer.begin(), _glyphPointer.end(),compareTexture);
 			break;
 		}
 		

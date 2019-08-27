@@ -18,8 +18,32 @@ namespace PandaEngine {
 		TEXTURE
 	};
 
-	struct Glyph
-	{
+	class Glyph
+	{ 
+	public:
+
+		Glyph(); 
+
+		Glyph(const glm::vec4 & dectRect, const glm::vec4 & uvRect, GLuint TextureId, float Depth, const ColorRGBA8 & color)
+			:textureId(TextureId),depth(Depth)
+		{  
+		     topLeft.color = color;
+		     topLeft.setPosition(dectRect.x, dectRect.y + dectRect.w);
+		     topLeft.setUV(uvRect.x, uvRect.y + uvRect.w);
+		     
+		     bottomLeft.color = color;
+		     bottomLeft.setPosition(dectRect.x, dectRect.y);
+		     bottomLeft.setUV(uvRect.x, uvRect.y);
+		     
+		     bottomRight.color = color;
+		     bottomRight.setPosition(dectRect.x + dectRect.z, dectRect.y);
+		     bottomRight.setUV(uvRect.x + uvRect.z, uvRect.y);
+		     
+		     topRight.color = color;
+		     topRight.setPosition(dectRect.x + dectRect.z, dectRect.y + dectRect.w);
+		     topRight.setUV(uvRect.x + uvRect.z, uvRect.y + uvRect.w);
+		}
+
 		GLuint textureId;
 		float depth;
 
@@ -75,7 +99,8 @@ namespace PandaEngine {
 		
 		GlyphSortType _sortType;
 
-		std::vector<Glyph*> _glyphs;
+		std::vector<Glyph> _glyphs; // These are the actual glyphs
+		std::vector<Glyph*> _glyphPointer; // this is for sorting 
 
 		std::vector<RenderBatch> _renderbatchs;
 	};
